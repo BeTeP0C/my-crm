@@ -5,12 +5,9 @@ import {showModalEdit, deleteContacts, modalCloseEdit, createContactEdit, inputA
     const modal = document.querySelector(".modal-edit");
     let permission = true;
 
-
     addContacts(modal);
     inputActive(modal);
     validate(modal);
     editClient();
-
   });
-
 }());

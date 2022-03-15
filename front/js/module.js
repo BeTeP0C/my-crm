@@ -158,6 +158,7 @@ export function modalCloseEdit () {
     modalOverlay.classList.remove("modal-overlay_active");
     modalEdit.classList.remove("modal_active");
     modalEdit.classList.remove("modal-delete_active");
+    modalEdit.classList.remove("modal-registration_active");
     modalEdit.classList.add("modal_close");
     setTimeout(() => {
       deleteContacts();
@@ -289,14 +290,14 @@ export function inputActive (modal) {
 export function createContact () {
   const list = modalRegistration.querySelector('.contacts__list');
   const contacts = ['Телефон', 'Email', 'Facebook', 'VK', 'Другое'];
-  const buttonAdd = document.querySelector(".contacts__add");
+  const buttonAdd = modalRegistration.querySelector(".contacts__add");
   const item = document.createElement("li");
   const form = document.createElement("form");
   const select = document.createElement("select");
   const input = document.createElement("input");
   const button = document.createElement("button");
-  const block = document.querySelector(".contacts");
-  const content = document.querySelector(".contacts__content");
+  const block = modalRegistration.querySelector(".contacts");
+  const content = modalRegistration.querySelector(".contacts__content");
   const icon = `
   <svg class='contacts__icon' width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M8 2C4.682 2 2 4.682 2 8C2 11.318 4.682 14 8 14C11.318 14 14 11.318 14 8C14 4.682 11.318 2 8 2ZM8 12.8C5.354 12.8 3.2 10.646 3.2 8C3.2 5.354 5.354 3.2 8 3.2C10.646 3.2 12.8 5.354 12.8 8C12.8 10.646 10.646 12.8 8 12.8ZM10.154 5L8 7.154L5.846 5L5 5.846L7.154 8L5 10.154L5.846 11L8 8.846L10.154 11L11 10.154L8.846 8L11 5.846L10.154 5Z" fill="#B0B0B0"/>
@@ -327,6 +328,7 @@ export function createContact () {
 
   button.innerHTML = icon;
   button.addEventListener("click", () => {
+    console.log(1);
     item.remove();
     if (list.children.length === 0) {
       content.classList.remove("contacts__content_active");
@@ -577,6 +579,12 @@ export function addClients (e = "default", array) {
   }
 
   async function addClient () {
+    const table = document.querySelector(".table__content");
+    const clientsContent = document.querySelector(".clients__content");
+    const preloader = document.querySelector(".clients__preloader");
+    clientsContent.classList.add("is-load");
+    preloader.classList.add("clients__preloader_active");
+
     const defineArray = async () => {
       const response = await fetch("http://localhost:3000/api/clients");
 
@@ -584,11 +592,6 @@ export function addClients (e = "default", array) {
       return array;
     }
     const data = await defineArray();
-    console.log(data);
-    const table = document.querySelector(".table__content");
-    const modalOverlay = document.querySelector(".modal-overlay");
-    const buttonDeleteClient = modalRegistration.querySelector(".modal__delete");
-    let idClient = 0;
 
     table.addEventListener("click", e => {
       if (e.target.classList.contains("client__additionally")) {
@@ -610,141 +613,154 @@ export function addClients (e = "default", array) {
       };
     });
 
-    data.forEach(el => {
-      const line = document.createElement("tr");
-      const id = document.createElement("td");
-      const infoUser = document.createElement("td");
-      const dateCreate = document.createElement("td");
-      const dateCreateExact = document.createElement("span");
-      const dateEdit = document.createElement("td");
-      const dateEditExact = document.createElement("span");
-      const contacts = document.createElement("td");
-      const clientList = document.createElement("ul");
-      const actions = document.createElement("td");
-      const buttonEdit = document.createElement("button");
-      const buttonDelete = document.createElement("button");
+    setTimeout(() => {
+      data.forEach(el => {
+        const line = document.createElement("tr");
+        const id = document.createElement("td");
+        const infoUser = document.createElement("td");
+        const dateCreate = document.createElement("td");
+        const dateCreateExact = document.createElement("span");
+        const dateEdit = document.createElement("td");
+        const dateEditExact = document.createElement("span");
+        const contacts = document.createElement("td");
+        const clientList = document.createElement("ul");
+        const actions = document.createElement("td");
+        const buttonEdit = document.createElement("button");
+        const buttonDelete = document.createElement("button");
 
-      const createText = el.createdAt.split("T")[0].split('-');
-      const createTextExact = el.createdAt.split("T")[1].split('.')[0].split(":");
-      const editText =  el.updatedAt.split("T")[0].split('-');
-      const editTextExact = el.updatedAt.split("T")[1].split('.')[0].split(":");
+        const createText = el.createdAt.split("T")[0].split('-');
+        const createTextExact = el.createdAt.split("T")[1].split('.')[0].split(":");
+        const editText =  el.updatedAt.split("T")[0].split('-');
+        const editTextExact = el.updatedAt.split("T")[1].split('.')[0].split(":");
 
-      id.textContent = el.id;
-      infoUser.textContent = `${el.surname} ${el.name} ${el.lastName}`.trim();
+        id.textContent = el.id;
+        infoUser.textContent = `${el.surname} ${el.name} ${el.lastName}`.trim();
 
-      const yearCreate = createText[0];
-      createText[0] = createText[2];
-      createText[2] = yearCreate;
-      dateCreate.textContent = ` ${createText.join()} `;
-      dateCreateExact.textContent = `${createTextExact[0]}:${createTextExact[1]}`;
+        const yearCreate = createText[0];
+        createText[0] = createText[2];
+        createText[2] = yearCreate;
+        dateCreate.textContent = ` ${createText.join()} `;
+        dateCreateExact.textContent = `${createTextExact[0]}:${createTextExact[1]}`;
 
-      const yearEdit = editText[0];
-      editText[0] = editText[2];
-      editText[2] = yearEdit;
-      dateEdit.textContent = ` ${editText.join(".")} `;
-      dateEditExact.textContent = `${editTextExact[0]}:${editTextExact[1]}`;
+        const yearEdit = editText[0];
+        editText[0] = editText[2];
+        editText[2] = yearEdit;
+        dateEdit.textContent = ` ${editText.join(".")} `;
+        dateEditExact.textContent = `${editTextExact[0]}:${editTextExact[1]}`;
 
-      for (let i = 0; i < el.contacts.length; i++) {
-        const contact = el.contacts[i];
+        for (let i = 0; i < el.contacts.length; i++) {
+          const contact = el.contacts[i];
 
-        const item = document.createElement("li");
-        const button = document.createElement("button");
-        const prompt = document.createElement("span");
-        const typePrompt = document.createElement("span");
-        const linkPrompt = document.createElement("a");
-        const buttonShow = document.createElement("button");
+          const item = document.createElement("li");
+          const button = document.createElement("button");
+          const prompt = document.createElement("span");
+          const typePrompt = document.createElement("span");
+          const linkPrompt = document.createElement("a");
+          const buttonShow = document.createElement("button");
 
-        item.classList.add("client__item");
-        button.classList.add("client__contact", "btn-clear");
-        buttonShow.classList.add("client__additionally", "btn-clear");
-        prompt.classList.add("client__prompt");
-        typePrompt.classList.add("client__type");
-        linkPrompt.classList.add("client__link");
+          item.classList.add("client__item");
+          button.classList.add("client__contact", "btn-clear");
+          buttonShow.classList.add("client__additionally", "btn-clear");
+          prompt.classList.add("client__prompt");
+          typePrompt.classList.add("client__type");
+          linkPrompt.classList.add("client__link");
 
-        typePrompt.textContent = `${contact.type}:`;
-        linkPrompt.textContent = contact.value;
+          typePrompt.textContent = `${contact.type}:`;
+          linkPrompt.textContent = contact.value;
 
-        if (contact.type === "Телефон") {
-          button.classList.add("client__contact-tel");
-          linkPrompt.setAttribute("href", `tel: ${contact.value}`)
-        } else if (contact.type === "Email") {
-          button.classList.add("client__contact-mail");
-          linkPrompt.setAttribute("href", `mailto: ${contact.value}`)
-        } else if (contact.type === "VK") {
-          button.classList.add("client__contact-vk");
-          linkPrompt.setAttribute("href", `${contact.value}`)
-        } else if (contact.type === "Facebook") {
-          button.classList.add("client__contact-fb");
-          linkPrompt.setAttribute("href", `${contact.value}`)
-        } else if (contact.type === "Другое") {
-          button.classList.add("client__contact-other");
-          typePrompt.textContent = "";
+          if (contact.type === "Телефон") {
+            button.classList.add("client__contact-tel");
+            linkPrompt.setAttribute("href", `tel: ${contact.value}`)
+          } else if (contact.type === "Email") {
+            button.classList.add("client__contact-mail");
+            linkPrompt.setAttribute("href", `mailto: ${contact.value}`)
+          } else if (contact.type === "VK") {
+            button.classList.add("client__contact-vk");
+            linkPrompt.setAttribute("href", `${contact.value}`)
+          } else if (contact.type === "Facebook") {
+            button.classList.add("client__contact-fb");
+            linkPrompt.setAttribute("href", `${contact.value}`)
+          } else if (contact.type === "Другое") {
+            button.classList.add("client__contact-other");
+            typePrompt.textContent = "";
+          }
+
+          if (el.contacts.length > 5) {
+            if (i === 4) {
+              button.classList.add("client__contact_hide");
+              buttonShow.textContent = `+${el.contacts.length - 4}`
+              item.append(buttonShow)
+            } else if (i > 4) {
+              item.classList.add("client__item_hide");
+            }
+          }
+
+          prompt.append(typePrompt);
+          prompt.append(linkPrompt);
+          button.append(prompt);
+          item.append(button);
+          clientList.append(item);
         }
 
-        if (el.contacts.length > 5) {
-          if (i === 4) {
-            button.classList.add("client__contact_hide");
-            buttonShow.textContent = `+${el.contacts.length - 4}`
-            item.append(buttonShow)
-          } else if (i > 4) {
-            item.classList.add("client__item_hide");
-          }
-        }
+        buttonEdit.textContent = "Изменить";
+        buttonDelete.textContent = "Удалить";
 
-        prompt.append(typePrompt);
-        prompt.append(linkPrompt);
-        button.append(prompt);
-        item.append(button);
-        clientList.append(item);
-      }
+        line.classList.add("table__client", "client", "table__line")
+        id.classList.add("client__cell", "client__id");
+        infoUser.classList.add("client__cell", "client__name");
+        dateCreate.classList.add("client__cell", "client__date-create");
+        dateCreateExact.classList.add("client__date-exact");
+        dateEdit.classList.add("client__cell", "client__date-change");
+        dateEditExact.classList.add("client__date-exact");
+        contacts.classList.add("client__cell", "client__contacts");
+        clientList.classList.add("client__list");
+        actions.classList.add("client__cell", "client__buttons");
+        buttonEdit.classList.add("client__button", "btn-clear", "client__button-edit");
+        buttonDelete.classList.add("client__button", "btn-clear", "client__button-delete");
 
-      buttonEdit.textContent = "Изменить";
-      buttonDelete.textContent = "Удалить";
+        dateCreate.append(dateCreateExact);
+        dateEdit.append(dateEditExact);
+        contacts.append(clientList);
+        actions.append(buttonEdit);
+        actions.append(buttonDelete);
+        line.append(id);
+        line.append(infoUser);
+        line.append(dateCreate);
+        line.append(dateEdit);
+        line.append(contacts);
+        line.append(actions);
 
-      line.classList.add("table__client", "client", "table__line")
-      id.classList.add("client__cell", "client__id");
-      infoUser.classList.add("client__cell", "client__name");
-      dateCreate.classList.add("client__cell", "client__date-create");
-      dateCreateExact.classList.add("client__date-exact");
-      dateEdit.classList.add("client__cell", "client__date-change");
-      dateEditExact.classList.add("client__date-exact");
-      contacts.classList.add("client__cell", "client__contacts");
-      clientList.classList.add("client__list");
-      actions.classList.add("client__cell", "client__buttons");
-      buttonEdit.classList.add("client__button", "btn-clear", "client__button-edit");
-      buttonDelete.classList.add("client__button", "btn-clear", "client__button-delete");
+        buttonDelete.addEventListener("click", () => {
+          const button = modalDelte.querySelector(".modal__delete");
+          button.classList.add(`delete-${el.id}`);
 
-      dateCreate.append(dateCreateExact);
-      dateEdit.append(dateEditExact);
-      contacts.append(clientList);
-      actions.append(buttonEdit);
-      actions.append(buttonDelete);
-      line.append(id);
-      line.append(infoUser);
-      line.append(dateCreate);
-      line.append(dateEdit);
-      line.append(contacts);
-      line.append(actions);
+          showModalDelete();
+          button.addEventListener("click", async () => {
+            if (button.classList.contains(`delete-${el.id}`)) {
+              await fetch(`http://localhost:3000/api/clients/${id.textContent}`, {
+                method: "DELETE"
+              });
 
-      buttonDelete.addEventListener("click", () => {
-        const button = modalDelte.querySelector(".modal__delete");
-        button.classList.add(`delete-${el.id}`);
-
-        showModalDelete();
-        button.addEventListener("click", async () => {
-          if (button.classList.contains(`delete-${el.id}`)) {
-            await fetch(`http://localhost:3000/api/clients/${id.textContent}`, {
-              method: "DELETE"
-            });
-
-            button.classList.remove(`delete-${el.id}`);
-            line.remove();
-          }
+              button.classList.remove(`delete-${el.id}`);
+              line.remove();
+            }
+          });
         });
-      });
 
-      table.append(line);
-    });
+        table.append(line);
+
+        if (table.children.length === data.length) {
+          console.log(1);
+
+        }
+      });
+    }, 1000)
+
+
+    setTimeout(() => {
+      preloader.classList.remove("clients__preloader_active");
+      clientsContent.classList.remove("is-load");
+    }, 1000);
   }
 
   if (e === "default") {
@@ -752,14 +768,12 @@ export function addClients (e = "default", array) {
 
   } else if (e === "click") {
 
-
     addClient();
     deleteClients();
   }
 };
 
 export function saveOnServer () {
-  addClients();
   const buttonAdd = modalRegistration.querySelector(".modal__save");
 
   const closeModal = () => {
@@ -769,6 +783,8 @@ export function saveOnServer () {
     const contactsContent = modalRegistration.querySelector(".contacts__content");
     const modalOverlay = document.querySelector(".modal-overlay");
     const button = modalRegistration.querySelector(".contacts__add");
+
+    modalRegistration.classList.add("modal_close");
 
     modalOverlay.classList.remove("modal-overlay_active");
     modalRegistration.classList.remove("modal_active");
@@ -875,9 +891,11 @@ export function saveOnServer () {
           serverError.textContent = "";
           serverError.classList.remove("contacts__error-server_active");
 
-          closeModal();
+          setTimeout(() => {
+            closeModal();
 
-          sortClients()
+            sortClients()
+          }, 500);
         }
       }
       checkOnServer();
@@ -915,12 +933,12 @@ export function editClient () {
       const client = button.parentNode.parentNode;
 
       const addContact = modalEdit.querySelector(".contacts__add");
-      let listContacts = modalEdit.querySelector(".contacts__list");
       const id = client.querySelector(".client__id").textContent;
       const response = await fetch(`http://localhost:3000/api/clients/${id}`);
       const data = await response.json();
       const modalId = modalEdit.querySelector(".modal-edit__id");
       const labels = modalEdit.querySelectorAll(".modal__label");
+      let listContacts = modalEdit.querySelector(".contacts__list");
 
       labels.forEach(label => {
         const input = label.querySelector(".modal__input");
@@ -1052,7 +1070,11 @@ export function editClient () {
       };
       checkChanges();
 
-      showModalEdit();
+      setTimeout(() => {
+        showModalEdit();
+        button.classList.remove("client__button-edit_load");
+      }, 500);
+
       modalCloseEdit();
     };
   });
@@ -1086,8 +1108,11 @@ export function editClient () {
       const modalOverlay = document.querySelector(".modal-overlay");
       const button = modalEdit.querySelector(".contacts__add");
 
+      modalEdit.classList.add("modal_close");
+
       modalOverlay.classList.remove("modal-overlay_active");
       modalEdit.classList.remove("modal_active");
+      modalEdit.classList.remove("modal-registration_active");
       body.style.overflowY = "auto";
       contacts.classList.remove("contacts_active");
       contactsContent.classList.remove("contacts__content_active");
@@ -1111,7 +1136,8 @@ export function editClient () {
       });
     };
 
-    buttonSave.addEventListener("click", async () => {
+    buttonSave.addEventListener("click", async (e) => {
+      e.preventDefault();
       const id = modalEdit.querySelector(".modal-edit__id").textContent.split(" ")[1];
       const errorUsers = modalEdit.querySelectorAll(".modal__error").length;
       const errorContacts = modalEdit.querySelectorAll(".contacts__error").length;
@@ -1189,9 +1215,11 @@ export function editClient () {
           serverError.textContent = "";
           serverError.classList.remove("contacts__error-server_active");
 
-          closeModal();
+          setTimeout(() => {
+            closeModal();
 
-          sortClients();
+            sortClients();
+          }, 500)
         }
       }
     });
@@ -1254,136 +1282,45 @@ export async function sortClients (e) {
   };
 
   const sortName = (type = "descending") => {
-    const minStr = (str1, str2) => {
-      if (str1.length <= str2.length) {
-        return str1.length;
-      } else {
-        return str2.length;
-      }
-    };
+    const sortedClientsInfo = []
+
+    sortedClients.forEach(sortedClient => {
+      sortedClientsInfo.push(`${sortedClient.surname} ${sortedClient.name} ${sortedClient.lastName}`);
+    });
 
     if (type === "increase") {
-      console.log(sortedClients);
+      sortedClientsInfo.sort((a,b) => a > b ? 1:-1);
 
       for (let i = 0; i < sortedClients.length; i++) {
-        for (let j = 0; j < sortedClients.length - 1 - i; j++){
-          const currentClient = sortedClients[j];
-          const nextClient = sortedClients[j+1];
+        const sortedClientFullname = sortedClientsInfo[i].split(" ");
 
-          const currentName = sortedClients[j].name;
-          const currentSurname = sortedClients[j].surname;
-          const currentMiddlename = sortedClients[j].lastName;
-
-          const nextName = sortedClients[j+1].name;
-          const nextSurname = sortedClients[j+1].surname;
-          const nextMiddlename = sortedClients[j+1].lastName;
-
-          if (currentSurname !== nextSurname) {
-            for (let n = 0; n < minStr(currentSurname, nextSurname); n++) {
-              console.log(j,currentSurname, nextSurname);
-              if (currentSurname[n] > nextSurname[n]) {
-                sortedClients[j] = nextClient;
-                sortedClients[j+1]= currentClient;
-                console.log(15,currentSurname,nextSurname);
-                break;
-              } else if (currentSurname[n] === nextSurname[n]) {
-                console.log(16,currentSurname,nextSurname);
-                continue;
-              } else {
-                console.log(17,currentSurname,nextSurname);
-                break;
-              }
-            }
-          } else {
-            if (currentName !== nextName) {
-              for (let n = 0; n < minStr(currentName, nextName); n++) {
-                if (currentName[n] > nextName[n]) {
-                  sortedClients[j] = nextClient;
-                  sortedClients[j+1]= currentClient;
-                  break;
-                } else if (currentName[n] === nextName[n]) {
-                  continue;
-                } else {
-                  break;
-                }
-              }
-            } else {
-              if (currentMiddlename !== nextMiddlename) {
-                for (let n = 0; n < minStr(currentMiddlename, nextMiddlename); n++) {
-                  if (currentMiddlename[n] > nextMiddlename[n]) {
-                    sortedClients[j] = nextClient;
-                    sortedClients[j+1]= currentClient;
-                    break;
-                  } else if (currentMiddlename[n] === nextMiddlename[n]) {
-                    continue;
-                  } else {
-                    break;
-                  }
-                }
-              }
-            }
+        sortedClients.forEach(client => {
+          if (client.surname === sortedClientFullname[0] &&
+              client.name === sortedClientFullname[1] &&
+              client.lastName === sortedClientFullname[2]) {
+            const index = sortedClients.indexOf(client);
+            const prevClient = sortedClients[i];
+            sortedClients[i] = client;
+            sortedClients[index] = prevClient;
           }
-          console.log(j,sortedClients);
-        }
-        console.log(i)
+        });
       }
-      console.log(sortedClients);
     } else if (type === "descending") {
+      sortedClientsInfo.sort((a,b) => a < b ? 1:-1);
+
       for (let i = 0; i < sortedClients.length; i++) {
-        for (let j = 0; j < sortedClients.length - 1 - i; j++){
-          const currentClient = sortedClients[j];
-          const nextClient = sortedClients[j+1];
+        const sortedClientFullname = sortedClientsInfo[i].split(" ");
 
-          const currentName = sortedClients[j].name;
-          const currentSurname = sortedClients[j].surname;
-          const currentMiddlename = sortedClients[j].lastName;
-
-          const nextName = sortedClients[j+1].name;
-          const nextSurname = sortedClients[j+1].surname;
-          const nextMiddlename = sortedClients[j+1].lastName;
-
-          if (currentSurname !== nextSurname) {
-            for (let n = 0; n < minStr(currentSurname, nextSurname); n++) {
-              if (currentSurname[n] < nextSurname[n]) {
-                sortedClients[j] = nextClient;
-                sortedClients[j+1]= currentClient;
-                break;
-              } else if (currentSurname[n] === nextSurname[n]) {
-                continue;
-              } else {
-                break;
-              }
-            }
-          } else {
-            if (currentName !== nextName) {
-              for (let n = 0; n < minStr(currentName, nextName); n++) {
-                if (currentName[n] < nextName[n]) {
-                  sortedClients[j] = nextClient;
-                  sortedClients[j+1]= currentClient;
-                  break;
-                } else if (currentName[n] === nextName[n]) {
-                  continue;
-                } else {
-                  break;
-                }
-              }
-            } else {
-              if (currentMiddlename !== nextMiddlename) {
-                for (let n = 0; n < minStr(currentMiddlename, nextMiddlename); n++) {
-                  if (currentMiddlename[n] < nextMiddlename[n]) {
-                    sortedClients[j] = nextClient;
-                    sortedClients[j+1]= currentClient;
-                    break;
-                  } else if (currentMiddlename[n] === nextMiddlename[n]) {
-                    continue;
-                  } else {
-                    break;
-                  }
-                }
-              }
-            }
+        sortedClients.forEach(client => {
+          if (client.surname === sortedClientFullname[0] &&
+              client.name === sortedClientFullname[1] &&
+              client.lastName === sortedClientFullname[2]) {
+            const index = sortedClients.indexOf(client);
+            const prevClient = sortedClients[i];
+            sortedClients[i] = client;
+            sortedClients[index] = prevClient;
           }
-        }
+        });
       }
     }
     (async function () {
@@ -1423,8 +1360,6 @@ export async function sortClients (e) {
         }
       }
     }
-
-    console.log(sortedClients);
 
     (async function () {
       addClients("click", sortedClients);
@@ -1570,3 +1505,16 @@ export async function sortClients (e) {
   }
 }
 
+export function preloader () {
+  (function preloaderTable () {
+    const table = document.querySelector(".table__content");
+
+    table.addEventListener("click", async e => {
+      if (e.target.classList.contains("client__button-edit")) {
+        const button = e.target;
+
+        button.classList.add("client__button-edit_load");
+      };
+    });
+  }());
+}

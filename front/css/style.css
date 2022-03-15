@@ -681,10 +681,103 @@ input::-webkit-inner-spin-button {
   color: #333333;
 }
 
+.clients__content {
+  position: relative;
+}
+
 .table {
   margin-bottom: 40px;
   width: 100%;
   border-spacing: 0;
+}
+
+.clients__content.is-load {
+  min-height: 328px;
+  max-height: 328px;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+
+.clients__preloader {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 0;
+  top: 28px;
+  right: 0;
+  left: 0;
+  background: #fff;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 100;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.clients__preloader_active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.clients__loader {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border: 8px solid #9873FF;
+  border-radius: 100%;
+  animation-name: spn-1, spn-2;
+  animation-duration: 1s, 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate, normal;
+}
+
+@keyframes spn-1 {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+  }
+
+  12.5% {
+    clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%);
+  }
+
+  25% {
+    clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%);
+  }
+
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+  }
+
+  62.5% {
+    clip-path: polygon(50% 50%, 100% 0, 100% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+  }
+
+  75% {
+    clip-path: polygon(50% 50%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 50% 100%, 0% 100%);
+  }
+
+  100% {
+    clip-path: polygon(50% 50%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 0% 100%);
+  }
+}
+
+@keyframes spn-2 {
+  0% {
+    transform: scaleY(1) rotate(0deg);
+  }
+
+  49.99% {
+    transform: scaleY(1) rotate(135deg);
+  }
+
+  50% {
+    transform: scaleY(-1) rotate(0deg);
+  }
+
+  100% {
+    transform: scaleY(-1) rotate(-135deg);
+  }
 }
 
 .table__heading {
@@ -773,10 +866,6 @@ input::-webkit-inner-spin-button {
 .table__button.is-increase .table__icon {
   transform: rotate(180deg);
 }
-/*
-.table__button:active .table__icon {
-  transform: rotate(180deg);
-} */
 
 .client {
   background-color: #fff;
@@ -975,7 +1064,41 @@ input::-webkit-inner-spin-button {
   height: 16px;
   background: url('../img/edit.svg') center center no-repeat transparent;
   background-size: cover;
+  transition: opacity 0.3s ease;
 }
+
+.client__button-edit_load::before {
+  opacity: 0;
+}
+
+.client__button-edit::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  opacity: 0;
+  background: url('../img/preloader-button.svg') center center no-repeat transparent;
+  background-size: cover;
+  transition: opacity 0.3s ease;
+  animation: spin 1s linear infinite;
+}
+
+.client__button-edit_load::after {
+  opacity: 1;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 
 .client__button-delete::before {
   position: absolute;

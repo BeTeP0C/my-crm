@@ -18,7 +18,7 @@
   <script defer src="../js/sendOnServe.js" type="module"></script>
   <script defer src="../js/edit-client.js" type="module"></script>
   <script defer src="../js/sort-clients.js" type="module"></script>
-
+  <script defer src="../js/preloader.js" type="module"></script>
 </head>
 <body>
   <header class="header">
@@ -34,62 +34,68 @@
       <div class="container clients__container">
         <h1 class="clients__heading">Клиенты</h1>
 
-        <table class="clients__table table">
-          <tbody class="table__content">
-            <tr class="table__headings table__line">
-              <th class="table__heading">
-                <button class="table__button is-id btn-clear is-increase table__sort">
-                  ID
-                  <span class="table__indicator">
-                    <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
-                    </svg>
-                  </span>
-                </button>
+        <div class="clients__content">
+          <table class="clients__table table">
+            <tbody class="table__content">
+              <tr class="table__headings table__line">
+                <th class="table__heading">
+                  <button class="table__button is-id btn-clear is-increase table__sort">
+                    ID
+                    <span class="table__indicator">
+                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
+                      </svg>
+                    </span>
+                  </button>
 
-              </th>
-              <th class="table__heading">
-                <button class="table__button btn-clear is-name is-descending table__sort">
-                  Фамилия Имя Отчество
-                  <span class="table__indicator">
-                    <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
-                    </svg>
-                    <span class="table-symbol table__first-letter">А</span>
-                    <span class="table-symbol table__first-dash">-</span>
-                    <span class="table-symbol table__last-letter">Я</span>
-                  </span>
-                </button>
-              </th>
-              <th class="table__heading">
-                <button class="table__button is-date-create btn-clear is-descending table__sort">
-                  Дата и время создания
-                  <span class="table__indicator">
-                    <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
-                    </svg>
-                  </span>
-                </button>
-              </th>
-              <th class="table__heading table__last-change">
-                <button class="table__button is-date-update btn-clear is-descending table__sort">
-                  Последние изменения
-                  <span class="table__indicator">
-                    <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
-                    </svg>
-                  </span>
-                </button>
-              </th>
-              <th class="table__heading table__contacts">
-                <button class="table__button btn-clear">Контакты</button>
-              </th>
-              <th class="table__heading table__actions">
-                <button class="table__button btn-clear">Действия</button>
-              </th>
-            </tr>
-          </tbody>
-        </table>
+                </th>
+                <th class="table__heading">
+                  <button class="table__button btn-clear is-name is-descending table__sort">
+                    Фамилия Имя Отчество
+                    <span class="table__indicator">
+                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
+                      </svg>
+                      <span class="table-symbol table__first-letter">А</span>
+                      <span class="table-symbol table__first-dash">-</span>
+                      <span class="table-symbol table__last-letter">Я</span>
+                    </span>
+                  </button>
+                </th>
+                <th class="table__heading">
+                  <button class="table__button is-date-create btn-clear is-descending table__sort">
+                    Дата и время создания
+                    <span class="table__indicator">
+                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
+                      </svg>
+                    </span>
+                  </button>
+                </th>
+                <th class="table__heading table__last-change">
+                  <button class="table__button is-date-update btn-clear is-descending table__sort">
+                    Последние изменения
+                    <span class="table__indicator">
+                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
+                      </svg>
+                    </span>
+                  </button>
+                </th>
+                <th class="table__heading table__contacts">
+                  <button class="table__button btn-clear">Контакты</button>
+                </th>
+                <th class="table__heading table__actions">
+                  <button class="table__button btn-clear">Действия</button>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="clients__preloader">
+            <div class="clients__loader"></div>
+          </div>
+        </div>
 
         <div class="clients__add">
           <button class="clients__button btn-clear">
