@@ -1,31 +1,39 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CRM</title>
 
-  <link rel="stylesheet" href="../css/normalize.css">
+  <link href="./css/normalize.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
+  <link href="./css/style.css" rel="stylesheet">
 
-  <script defer src="../library-js/choices.js"></script>
-  <script defer src="../library-js/inputmask.min.js"></script>
+  <script src="library-js/choices.js" defer></script>
+  <script src="library-js/inputmask.min.js" defer></script>
 
-
-  <script defer src="../js/deleteClient.js" type="module"></script>
-  <script defer src="../js/sendOnServe.js" type="module"></script>
-  <script defer src="../js/edit-client.js" type="module"></script>
-  <script defer src="../js/sort-clients.js" type="module"></script>
-  <script defer src="../js/preloader.js" type="module"></script>
+  <script src="./js/sendOnServe.js" defer type="module"></script>
+  <script src="./js/edit-client.js" defer type="module"></script>
+  <script src="./js/sort-clients.js" defer type="module"></script>
+  <script src="./js/preloader.js" defer type="module"></script>
+  <script src="./js/search.js" defer type="module"></script>
+  <script src="./js/createClientCard.js" defer type="module"></script>
 </head>
+
 <body>
   <header class="header">
     <div class="container header__container">
       <div class="header__logo"></div>
 
-      <input type="text" class="header__search" placeholder="Введите запрос">
+      <div class="header__searcher">
+        <input class="header__search" type="text" placeholder="Введите запрос">
+
+        <div class="header__prompts prompts">
+          <ul class="prompts__list"></ul>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -42,8 +50,10 @@
                   <button class="table__button is-id btn-clear is-increase table__sort">
                     ID
                     <span class="table__indicator">
-                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
+                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z"
+                          fill="#9873FF"></path>
                       </svg>
                     </span>
                   </button>
@@ -53,8 +63,10 @@
                   <button class="table__button btn-clear is-name is-descending table__sort">
                     Фамилия Имя Отчество
                     <span class="table__indicator">
-                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
+                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z"
+                          fill="#9873FF"></path>
                       </svg>
                       <span class="table-symbol table__first-letter">А</span>
                       <span class="table-symbol table__first-dash">-</span>
@@ -66,8 +78,10 @@
                   <button class="table__button is-date-create btn-clear is-descending table__sort">
                     Дата и время создания
                     <span class="table__indicator">
-                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
+                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z"
+                          fill="#9873FF"></path>
                       </svg>
                     </span>
                   </button>
@@ -76,8 +90,10 @@
                   <button class="table__button is-date-update btn-clear is-descending table__sort">
                     Последние изменения
                     <span class="table__indicator">
-                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z" fill="#9873FF"/>
+                      <svg class="table__icon" width="8" height="8" viewbox="0 0 8 8" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L7.295 3.295L4.5 6.085L4.5 0L3.5 0L3.5 6.085L0.71 3.29L0 4L4 8L8 4Z"
+                          fill="#9873FF"></path>
                       </svg>
                     </span>
                   </button>
@@ -103,7 +119,9 @@
 
             <span class="clients__icon">
               <svg width="23" height="16" viewbox="0 0 23 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14.5 8C16.71 8 18.5 6.21 18.5 4C18.5 1.79 16.71 0 14.5 0C12.29 0 10.5 1.79 10.5 4C10.5 6.21 12.29 8 14.5 8ZM5.5 6V3H3.5V6H0.5V8H3.5V11H5.5V8H8.5V6H5.5ZM14.5 10C11.83 10 6.5 11.34 6.5 14V16H22.5V14C22.5 11.34 17.17 10 14.5 10Z" fill="#9873FF"/>
+                <path
+                  d="M14.5 8C16.71 8 18.5 6.21 18.5 4C18.5 1.79 16.71 0 14.5 0C12.29 0 10.5 1.79 10.5 4C10.5 6.21 12.29 8 14.5 8ZM5.5 6V3H3.5V6H0.5V8H3.5V11H5.5V8H8.5V6H5.5ZM14.5 10C11.83 10 6.5 11.34 6.5 14V16H22.5V14C22.5 11.34 17.17 10 14.5 10Z"
+                  fill="#9873FF"></path>
               </svg>
             </span>
           </button>
@@ -121,15 +139,15 @@
           <form class="modal__form modal-edit__form">
             <label class="modal__label modal-edit__label">
               <span class="modal__title">Фамилия*</span>
-              <input type="text" class="modal__input modal-edit__input modal__input_must modal-edit__surname">
+              <input class="modal__input modal-edit__input modal__input_must modal-edit__surname" type="text">
             </label>
             <label class="modal__label modal-edit__label">
               <span class="modal__title">Имя*</span>
-              <input type="text" class="modal__input modal-edit__input modal__input_must modal-edit__name">
+              <input class="modal__input modal-edit__input modal__input_must modal-edit__name" type="text">
             </label>
             <label class="modal__label modal-edit__label">
               <span class="modal__title">Отчество</span>
-              <input type="text" class="modal__input modal-edit__input modal__input_unmust modal-edit__middlename">
+              <input class="modal__input modal-edit__input modal__input_unmust modal-edit__middlename" type="text">
             </label>
           </form>
         </div>
@@ -142,7 +160,9 @@
 
           <button class="contacts__add btn-clear">
             <svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8.00001 4.66659C7.63334 4.66659 7.33334 4.96659 7.33334 5.33325V7.33325H5.33334C4.96668 7.33325 4.66668 7.63325 4.66668 7.99992C4.66668 8.36659 4.96668 8.66659 5.33334 8.66659H7.33334V10.6666C7.33334 11.0333 7.63334 11.3333 8.00001 11.3333C8.36668 11.3333 8.66668 11.0333 8.66668 10.6666V8.66659H10.6667C11.0333 8.66659 11.3333 8.36659 11.3333 7.99992C11.3333 7.63325 11.0333 7.33325 10.6667 7.33325H8.66668V5.33325C8.66668 4.96659 8.36668 4.66659 8.00001 4.66659ZM8.00001 1.33325C4.32001 1.33325 1.33334 4.31992 1.33334 7.99992C1.33334 11.6799 4.32001 14.6666 8.00001 14.6666C11.68 14.6666 14.6667 11.6799 14.6667 7.99992C14.6667 4.31992 11.68 1.33325 8.00001 1.33325ZM8.00001 13.3333C5.06001 13.3333 2.66668 10.9399 2.66668 7.99992C2.66668 5.05992 5.06001 2.66659 8.00001 2.66659C10.94 2.66659 13.3333 5.05992 13.3333 7.99992C13.3333 10.9399 10.94 13.3333 8.00001 13.3333Z" fill="#9873FF"/>
+              <path
+                d="M8.00001 4.66659C7.63334 4.66659 7.33334 4.96659 7.33334 5.33325V7.33325H5.33334C4.96668 7.33325 4.66668 7.63325 4.66668 7.99992C4.66668 8.36659 4.96668 8.66659 5.33334 8.66659H7.33334V10.6666C7.33334 11.0333 7.63334 11.3333 8.00001 11.3333C8.36668 11.3333 8.66668 11.0333 8.66668 10.6666V8.66659H10.6667C11.0333 8.66659 11.3333 8.36659 11.3333 7.99992C11.3333 7.63325 11.0333 7.33325 10.6667 7.33325H8.66668V5.33325C8.66668 4.96659 8.36668 4.66659 8.00001 4.66659ZM8.00001 1.33325C4.32001 1.33325 1.33334 4.31992 1.33334 7.99992C1.33334 11.6799 4.32001 14.6666 8.00001 14.6666C11.68 14.6666 14.6667 11.6799 14.6667 7.99992C14.6667 4.31992 11.68 1.33325 8.00001 1.33325ZM8.00001 13.3333C5.06001 13.3333 2.66668 10.9399 2.66668 7.99992C2.66668 5.05992 5.06001 2.66659 8.00001 2.66659C10.94 2.66659 13.3333 5.05992 13.3333 7.99992C13.3333 10.9399 10.94 13.3333 8.00001 13.3333Z"
+                fill="#9873FF"></path>
             </svg>
             Добавить контакт
           </button>
@@ -161,18 +181,18 @@
         <div class="modal__content modal-registration__content">
           <h3 class="modal__heading modal-registration__heading">Новый клиент</h3>
 
-          <form id="modal__form" class="modal__form modal-registration__form">
+          <form class="modal__form modal-registration__form" id="modal__form">
             <label class="modal__label modal-registration__label">
               <span class="modal__title">Фамилия*</span>
-              <input type="text" class="modal__input modal-registration__input modal__input_must" id="surname">
+              <input class="modal__input modal-registration__input modal__input_must" id="surname" type="text">
             </label>
             <label class="modal__label modal-registration__label">
               <span class="modal__title">Имя*</span>
-              <input type="text" class="modal__input modal-registration__input modal__input_must" id="name">
+              <input class="modal__input modal-registration__input modal__input_must" id="name" type="text">
             </label>
             <label class="modal__label modal-registration__label">
               <span class="modal__title">Отчество</span>
-              <input type="text" class="modal__input modal-registration__input modal__input_unmust" id="middlename">
+              <input class="modal__input modal-registration__input modal__input_unmust" id="middlename" type="text">
             </label>
           </form>
         </div>
@@ -185,7 +205,9 @@
 
           <button class="contacts__add btn-clear">
             <svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8.00001 4.66659C7.63334 4.66659 7.33334 4.96659 7.33334 5.33325V7.33325H5.33334C4.96668 7.33325 4.66668 7.63325 4.66668 7.99992C4.66668 8.36659 4.96668 8.66659 5.33334 8.66659H7.33334V10.6666C7.33334 11.0333 7.63334 11.3333 8.00001 11.3333C8.36668 11.3333 8.66668 11.0333 8.66668 10.6666V8.66659H10.6667C11.0333 8.66659 11.3333 8.36659 11.3333 7.99992C11.3333 7.63325 11.0333 7.33325 10.6667 7.33325H8.66668V5.33325C8.66668 4.96659 8.36668 4.66659 8.00001 4.66659ZM8.00001 1.33325C4.32001 1.33325 1.33334 4.31992 1.33334 7.99992C1.33334 11.6799 4.32001 14.6666 8.00001 14.6666C11.68 14.6666 14.6667 11.6799 14.6667 7.99992C14.6667 4.31992 11.68 1.33325 8.00001 1.33325ZM8.00001 13.3333C5.06001 13.3333 2.66668 10.9399 2.66668 7.99992C2.66668 5.05992 5.06001 2.66659 8.00001 2.66659C10.94 2.66659 13.3333 5.05992 13.3333 7.99992C13.3333 10.9399 10.94 13.3333 8.00001 13.3333Z" fill="#9873FF"/>
+              <path
+                d="M8.00001 4.66659C7.63334 4.66659 7.33334 4.96659 7.33334 5.33325V7.33325H5.33334C4.96668 7.33325 4.66668 7.63325 4.66668 7.99992C4.66668 8.36659 4.96668 8.66659 5.33334 8.66659H7.33334V10.6666C7.33334 11.0333 7.63334 11.3333 8.00001 11.3333C8.36668 11.3333 8.66668 11.0333 8.66668 10.6666V8.66659H10.6667C11.0333 8.66659 11.3333 8.36659 11.3333 7.99992C11.3333 7.63325 11.0333 7.33325 10.6667 7.33325H8.66668V5.33325C8.66668 4.96659 8.36668 4.66659 8.00001 4.66659ZM8.00001 1.33325C4.32001 1.33325 1.33334 4.31992 1.33334 7.99992C1.33334 11.6799 4.32001 14.6666 8.00001 14.6666C11.68 14.6666 14.6667 11.6799 14.6667 7.99992C14.6667 4.31992 11.68 1.33325 8.00001 1.33325ZM8.00001 13.3333C5.06001 13.3333 2.66668 10.9399 2.66668 7.99992C2.66668 5.05992 5.06001 2.66659 8.00001 2.66659C10.94 2.66659 13.3333 5.05992 13.3333 7.99992C13.3333 10.9399 10.94 13.3333 8.00001 13.3333Z"
+                fill="#9873FF"></path>
             </svg>
             Добавить контакт
           </button>
@@ -215,5 +237,54 @@
       </div>
     </div>
   </main>
+
+  <div class="card">
+    <div class="container card__container">
+      <span class="card__id">id: 124352</span>
+      <a class="card__back">
+        <svg class="card__icon" version="1.0" xmlns="http://www.w3.org/2000/svg" width="16.000000px"
+          height="16.000000px" viewbox="0 0 16.000000 16.000000" preserveaspectratio="xMidYMid meet">
+          <g transform="translate(0.000000,16.000000) scale(0.100000,-0.100000)" fill="#B0B0B0" stroke="none">
+            <path d="M40 105 l-24 -26 27 -27 c15 -14 27 -21 27 -15 0 7 -6 15 -12 20 -8
+            5 4 10 32 14 l45 6 -49 1 c-48 2 -49 2 -31 22 27 30 12 34 -15 5z"></path>
+          </g>
+        </svg>
+        Назад
+      </a>
+
+      <div class="card__top">
+
+        <div class="card__avatar">
+          <img class="card__client-img" src="./img/anonymus-ava.jpg" alt="Неизвестный">
+        </div>
+
+        <div class="card__info info">
+          <ul class="info__list">
+            <li class="info__item">
+              <h3 class="info__heading">Фамилия</h3>
+              <span class="info__value info__surname">Вальковский</span>
+            </li>
+            <li class="info__item">
+              <h3 class="info__heading">Имя</h3>
+              <span class="info__value info__name">Орест</span>
+            </li>
+            <li class="info__item">
+              <h3 class="info__heading">Отчество</h3>
+              <span class="info__value info__lastname">Не указано</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card__bottom">
+        <div class="card__contacts">
+          <h2 class="card__heading">Контакты:</h2>
+
+          <ul class="card__list"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>

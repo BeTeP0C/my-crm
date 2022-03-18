@@ -3,14 +3,15 @@ const modalRegistration = document.querySelector(".modal-registration");
 const modalDelte = document.querySelector(".modal-delete");
 const modalEdit = document.querySelector(".modal-edit");
 const buttonSave = modalEdit.querySelector(".modal__save");
-let countClick = 0;
+const esc = 27;
 const clicker = {
   typeSort: "id",
   currentButton: document.querySelector(".table__button.is-id"),
   amountClick: 1,
 }
+
+let countClick = 0;
 let permission = true;
-const esc = 27;
 
 export function showModal (type="registration") {
   const modalOverlay = document.querySelector(".modal-overlay");
@@ -72,6 +73,7 @@ export function closeModal (type = "modal-registration") {
 export function showModalDelete () {
   const modalOverlay = document.querySelector(".modal-overlay");
   const buttonClose = modalDelte.querySelector(".modal__close");
+
   modalDelte.classList.add("modal_active");
   modalDelte.classList.add("modal-delete_active");
   modalDelte.classList.remove("modal_close");
@@ -186,8 +188,9 @@ export function modalCloseEdit () {
 };
 
 export function createContactEdit (selectContact = "Телефон") {
-  const list = modalEdit.querySelector('.contacts__list');
   let contacts = ['Телефон', 'Email', 'Facebook', 'VK', 'Другое'];
+
+  const list = modalEdit.querySelector('.contacts__list');
   const contactFirst = contacts[0];
   contacts[contacts.indexOf(selectContact)] = contactFirst;
   contacts[0] = selectContact;
@@ -268,8 +271,8 @@ export function inputActive (modal) {
         label.classList.remove("modal__label_active");
         input.classList.remove("modal__input_active");
         title.classList.remove("modal__title_active");
-      }
-    }
+      };
+    };
 
     input.addEventListener("focus", () => {
       label.classList.add("modal__label_active");
@@ -282,7 +285,7 @@ export function inputActive (modal) {
         label.classList.remove("modal__label_active");
         input.classList.remove("modal__input_active");
         title.classList.remove("modal__title_active");
-      }
+      };
     });
   });
 };
@@ -328,7 +331,6 @@ export function createContact () {
 
   button.innerHTML = icon;
   button.addEventListener("click", () => {
-    console.log(1);
     item.remove();
     if (list.children.length === 0) {
       content.classList.remove("contacts__content_active");
@@ -363,7 +365,6 @@ export function addContacts (modal) {
     block.classList.add("contacts_active");
 
     if (modal == modalEdit) {
-      console.log(permission);
       if (permission) {
         createContactEdit();
       }
@@ -384,6 +385,7 @@ export function validate (modal)  {
   const buttonSave = modal.querySelector(".modal__save");
   const createError = (text) => {
     const error = document.createElement("span");
+
     error.textContent = text;
     error.classList.add("modal__error");
 
@@ -398,11 +400,13 @@ export function validate (modal)  {
     const validateFormUser = () => {
       inputUsersMust.forEach(inputUser => {
         const label = inputUser.parentNode;
+
         const deleteError = () => {
           if (label.querySelector(".modal__error") != null) {
             label.querySelector(".modal__error").remove();
           }
         };
+
         const addError = (error) => {
           deleteError();
           if (error != undefined) {
@@ -479,7 +483,6 @@ export function validate (modal)  {
           if (typeContact === "Телефон") {
             input.setAttribute("type", "tel");
             input.classList.add("contacts__input_number");
-            console.log(Inputmask("+7 (999) 999-99-99").mask(input));
           } else {
             input.setAttribute("type", "text");
             input.classList.remove("contacts__input_number");
@@ -503,16 +506,19 @@ export function validate (modal)  {
 
     buttonSave.addEventListener("click", () => {
       const forms = modal.querySelectorAll(".contacts__form");
+
       forms.forEach(form => {
         const input = form.querySelector(".contacts__input");
         const optionSelected = form.querySelector(".choices__item--selectable");
         const typeContact = optionSelected.textContent;
         const contactError = document.createElement("span");
+
         const deleteError = () => {
           if (form.querySelector(".contacts__error") != null) {
             form.querySelector(".contacts__error").remove();
           }
         };
+
         const addError = (error, text) => {
           deleteError();
           if (error != undefined) {
@@ -627,6 +633,10 @@ export function addClients (e = "default", array) {
         const actions = document.createElement("td");
         const buttonEdit = document.createElement("button");
         const buttonDelete = document.createElement("button");
+
+        infoUser.addEventListener("click", () => {
+          location.hash = `id-${el.id}`;
+        });
 
         const createText = el.createdAt.split("T")[0].split('-');
         const createTextExact = el.createdAt.split("T")[1].split('.')[0].split(":");
@@ -748,14 +758,8 @@ export function addClients (e = "default", array) {
         });
 
         table.append(line);
-
-        if (table.children.length === data.length) {
-          console.log(1);
-
-        }
       });
     }, 1000)
-
 
     setTimeout(() => {
       preloader.classList.remove("clients__preloader_active");
@@ -907,6 +911,7 @@ export function deleteClient () {
   const table = document.querySelector(".table__content");
   table.addEventListener("click", e => {
     if (e.target.classList.contains("client__button-delete")) {
+      e.preventDefault();
       const buttonDelete = modalDelte.querySelector(".modal__delete");
       const client = e.target.parentNode.parentNode;
       const button = client.querySelector(".client__button-delete");
@@ -931,7 +936,6 @@ export function editClient () {
     if (e.target.classList.contains("client__button-edit")) {
       const button = e.target;
       const client = button.parentNode.parentNode;
-
       const addContact = modalEdit.querySelector(".contacts__add");
       const id = client.querySelector(".client__id").textContent;
       const response = await fetch(`http://localhost:3000/api/clients/${id}`);
@@ -981,7 +985,6 @@ export function editClient () {
         }
 
         let answer = false;
-
 
         labels.forEach(label => {
           const input = label.querySelector(".modal__input");
@@ -1063,7 +1066,6 @@ export function editClient () {
           if (e.target.classList.contains("contacts__delete")
            || e.target.parentNode.classList.contains("contacts__delete")
            || e.target.parentNode.parentNode.classList.contains("contacts__delete")) {
-             console.log(e.target);
             checkContacts();
           };
         });
@@ -1192,7 +1194,7 @@ export function editClient () {
             }
           }
         });
-        console.log(id);
+
         const response = await fetch(`http://localhost:3000/api/clients/${id}`, {
           method: "PATCH",
           body: JSON.stringify({
@@ -1235,7 +1237,6 @@ export async function sortClients (e) {
   Object.assign(sortedClients, data);
 
   function sortId (type = "increase") {
-    console.log(type);
     const sortedClientsId = [];
 
     data.forEach(sortedClient => {
@@ -1244,7 +1245,6 @@ export async function sortClients (e) {
 
     if (type === "increase") {
       sortedClientsId.sort((a,b) => a - b);
-      console.log(sortedClientsId);
 
       for (let i = 0; i < sortedClientsId.length; i++) {
         const sortedClientId = sortedClientsId[i];
@@ -1257,7 +1257,6 @@ export async function sortClients (e) {
           }
         });
       }
-      console.log(sortedClients);
     } else if (type === "descending") {
       sortedClientsId.sort((a,b) => b - a);
 
@@ -1275,8 +1274,6 @@ export async function sortClients (e) {
     }
 
     (async function () {
-      console.log(sortedClients);
-
       addClients("click", sortedClients);
     }());
   };
@@ -1460,8 +1457,6 @@ export async function sortClients (e) {
             clicker.amountClick = 0;
           }
 
-          console.log(clicker);
-
           if (buttonSort.classList.contains("is-id")) {
             clicker.typeSort = "id";
             if (buttonSort.classList.contains("is-increase")) {
@@ -1484,7 +1479,6 @@ export async function sortClients (e) {
 
             clicker.typeSort = "dateCreate";
             if (buttonSort.classList.contains("is-increase")) {
-              console.log(1);
               sortDateCreate("increase");
             } else if (buttonSort.classList.contains("is-descending")) {
               sortDateCreate("descending");
@@ -1518,3 +1512,249 @@ export function preloader () {
     });
   }());
 }
+
+export async function searchClient () {
+  const searcher = document.querySelector(".header__search");
+  let sendClietns = [];
+  let timout;
+
+  searcher.addEventListener("focus", () => {
+    searcher.classList.add("header__search_focus");
+  });
+
+  searcher.addEventListener("blur", () => {
+    searcher.classList.remove("header__search_focus");
+  });
+
+  const createPrompt = async (str) => {
+    const response = await fetch("http://localhost:3000/api/clients");
+    const data = await response.json();
+    Object.assign(sendClietns, data);
+    const clientsInfo = [];
+    const pageUp = 38;
+    const pageDown = 40;
+
+    const clearPrompt = (list) => {
+      list.classList.remove("prompts__list_active");
+
+      Array.from(list.children).forEach(el => {
+        el.remove();
+      });
+    };
+
+    document.body.addEventListener("click", e => {
+      const elPressed = e.target;
+      const list = document.querySelector(".prompts__list");
+
+      if (!elPressed.classList.contains("prompts__list", "prompts__list_active")) {
+        clearPrompt(list);
+      }
+    });
+
+    const walkingButtons = () => {
+      document.addEventListener("keydown", e => {
+        const list = document.querySelector(".prompts__list");
+        const buttons = list.querySelectorAll(".prompts__button");
+        if (e.keyCode === pageUp) {
+          e.preventDefault();
+
+          if (searcher.classList.contains("header__search_focus")) {
+            buttons[buttons.length - 1].focus();
+          } else {
+            const buttonFocus = list.querySelector(".prompts__button_focus");
+            const indexFocus = Array.from(buttons).indexOf(buttonFocus);
+
+            if (indexFocus === 0) {
+              buttons[buttons.length - 1].focus();
+            } else {
+              buttons[indexFocus - 1].focus();
+            }
+          }
+        } else if (e.keyCode === pageDown) {
+          e.preventDefault();
+
+          if (searcher.classList.contains("header__search_focus")) {
+            buttons[0].focus();
+          } else {
+            const buttonFocus = list.querySelector(".prompts__button_focus");
+            const indexFocus = Array.from(buttons).indexOf(buttonFocus);
+
+            if (indexFocus === buttons.length - 1) {
+              buttons[0].focus();
+            } else {
+              buttons[indexFocus + 1].focus();
+            }
+          }
+        }
+      });
+    }
+
+    if (str !== "") {
+      sendClietns.forEach(client => {
+        const userInfo = `${client.surname} ${client.name} ${client.lastName}`;
+
+        if (userInfo.includes(str)) {
+          clientsInfo.push([`${client.name} ${client.surname}`, client.id]);
+        }
+      });
+    }
+
+    if (clientsInfo.length !== 0) {
+      const listPrompt = document.querySelector(".prompts__list");
+      listPrompt.classList.add("prompts__list_active");
+
+      Array.from(listPrompt.children).forEach(el => {
+        el.remove();
+      });
+
+      clientsInfo.forEach(clientInfo => {
+        const item = document.createElement("li");
+        const button = document.createElement("button");
+
+        button.addEventListener("focus", () => {
+          button.classList.add("prompts__button_focus");
+        })
+
+        button.addEventListener("blur", () => {
+          button.classList.remove("prompts__button_focus");
+        })
+
+        button.addEventListener("click", () => {
+          const clients = document.querySelectorAll(".client");
+          searcher.value = "";
+          clearPrompt(listPrompt);
+
+          clients.forEach(client => {
+            const id = client.querySelector(".client__id").textContent;
+
+            if (id === clientInfo[1]) {
+              client.scrollIntoView({behavior: "smooth"});
+              client.classList.add("client_found");
+            }
+          });
+
+          setTimeout(() => {
+            clients.forEach(client => {
+              if (client.classList.contains("client_found")) {
+                client.classList.remove("client_found");
+              }
+            });
+          }, 2000);
+        });
+
+        item.classList.add("prompts__item");
+        button.classList.add("prompts__button", "btn-clear");
+
+        button.textContent = clientInfo[0];
+        item.append(button);
+
+        listPrompt.append(item);
+      });
+    } else {
+      const listPrompt = document.querySelector(".prompts__list");
+      clearPrompt(listPrompt);
+    }
+
+    walkingButtons();
+  }
+
+  const startTimer = (value) => {
+    timout = setTimeout(() => {
+      createPrompt(value);
+    }, 300);
+  }
+  const deleteTimout = () => {
+    clearTimeout(timout);
+  };
+
+  searcher.addEventListener("input", (e) => {
+    const valueInput = e.target.value.trim();
+    deleteTimout();
+    startTimer(valueInput);
+  });
+};
+
+export const createClientCard = () => {
+  const hashPage = location.hash;
+  const body = document.body;
+  const header = document.querySelector(".header");
+  const main = document.querySelector(".main");
+  const card = document.querySelector(".card");
+  const contactsHeading = document.querySelector(".card__heading");
+
+  const backMain = () => {
+    const contacts = document.querySelectorAll(".card__item");
+    location.hash = "";
+    header.classList.remove("header_hide");
+    main.classList.remove("main_hide");
+    body.classList.remove("show-card");
+    card.classList.remove("card_active");
+    contacts.forEach(contact => {
+      contact.remove();
+    });
+    contactsHeading.style.display = "none";
+  }
+
+  const addCard = async () => {
+    const response = await fetch(`http://localhost:3000/api/clients/${hashPage.split("-")[1]}`);
+    const data = await response.json();
+    const clientId = document.querySelector(".card__id");
+    const clientSurname = document.querySelector(".info__surname");
+    const clientName = document.querySelector(".info__name");
+    const clientLastname = document.querySelector(".info__lastname");
+    const contactsList = document.querySelector(".card__list");
+    const createContacts = () => {
+      if (data.contacts.length !== 0) {
+        contactsHeading.style.display = "block";
+        data.contacts.forEach(client => {
+          const item = document.createElement("li");
+          const type = document.createElement("span");
+          const value = document.createElement("a");
+
+          item.classList.add("card__item");
+          type.classList.add("card__type");
+          value.classList.add("card__value");
+
+          type.textContent = `${client.type}: `;
+
+          if (client.type = "Телефон") {
+            value.textContent = client.value;
+            value.setAttribute("href", `tel:${client.value}`);
+          } else if (client.tpye = "Email") {
+            value.textContent = client.value;
+            value.setAttribute("href", `mailto:${client.value}`);
+          } else {
+            value.textContent = client.value;
+            value.setAttribute("href", `${client.value}`);
+          }
+
+          item.append(type);
+          item.append(value);
+          contactsList.append(item);
+        });
+      } else {
+        contactsHeading.style.display = "none";
+      }
+    }
+
+    clientId.textContent = `id: ${data.id}`;
+    clientSurname.textContent = data.surname;
+    clientName.textContent = data.name;
+
+    if (data.lastName !== "") {
+      clientLastname.textContent = data.lastName;
+    };
+
+    createContacts();
+  };
+
+  if (hashPage !== "") {
+    header.classList.add("header_hide");
+    main.classList.add("main_hide");
+    body.classList.add("show-card");
+    card.classList.add("card_active");
+    addCard();
+  } else {
+    backMain();
+  }
+};
