@@ -1107,6 +1107,11 @@ input::-webkit-inner-spin-button {
   cursor: pointer;
 }
 
+.client__contact:focus .client__prompt {
+  opacity: 1;
+  visibility: visible;
+}
+
 .client__contact:hover .client__prompt {
   opacity: 1;
   visibility: visible;

@@ -839,7 +839,8 @@ export function saveOnServer () {
         };
 
         const rightSend = (value) => {
-          const convertedValue = value[0].toUpperCase() + value.split(value[0])[1].toLowerCase();
+          console.log(value.slice(1).trim().toLowerCase());
+          const convertedValue = value[0].toUpperCase() + value.slice(1).trim().toLowerCase();
           return convertedValue;
         };
 
@@ -1162,7 +1163,7 @@ export function editClient () {
           middlename: ""
         };
         const rightSend = (value) => {
-          const convertedValue = value[0].toUpperCase() + value.split(value[0])[1].toLowerCase();
+          const convertedValue = value[0].toUpperCase() + value.slice(1).trim().toLowerCase();
           return convertedValue;
         };
         const infoContacts = [];
