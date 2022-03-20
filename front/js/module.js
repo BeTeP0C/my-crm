@@ -483,6 +483,7 @@ export function validate (modal)  {
           if (typeContact === "Телефон") {
             input.setAttribute("type", "tel");
             input.classList.add("contacts__input_number");
+            Inputmask("+7 (999) 999-99-99").mask(input)
           } else {
             input.setAttribute("type", "text");
             input.classList.remove("contacts__input_number");
